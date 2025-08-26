@@ -100,7 +100,7 @@ const Portfolio = () => {
           <div className="flex items-center justify-between h-16">
             <div className="flex items-center">
               <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                {profile?.name?.split(' ')[0]}
+                {profile?.name}
               </span>
             </div>
 
