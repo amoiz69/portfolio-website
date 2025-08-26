@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Github, Linkedin, Mail, ExternalLink, Calendar, Tag, ChevronDown } from 'lucide-react';
-import { API_URL } from './src/config.js';
+import { portfolioAPI } from './src/lib/supabase.js';
 
 const Portfolio = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -18,77 +18,26 @@ const Portfolio = () => {
 
   const fetchData = async () => {
     try {
-      // Simulated data for now - will be replaced with actual API calls
-      setProfile({
-        name: 'Your Name',
-        title: 'Full Stack Developer',
-        bio: 'Passionate about building beautiful, functional web applications that solve real-world problems.',
-        email: 'your.email@example.com',
-        github: 'https://github.com',
-        linkedin: 'https://linkedin.com',
-        image: '/api/placeholder/200/200'
+      const [profileData, projectsData, postsData, skillsData] = await Promise.all([
+        portfolioAPI.getProfile(),
+        portfolioAPI.getProjects(),
+        portfolioAPI.getBlogPosts(),
+        portfolioAPI.getSkills()
+      ]);
+
+      setProfile(profileData);
+      setProjects(Array.isArray(projectsData) ? projectsData : []);
+      setBlogPosts(Array.isArray(postsData) ? postsData : []);
+
+      // Group flat skills into { category, items: [] }
+      const groupedSkillsMap = new Map();
+      (Array.isArray(skillsData) ? skillsData : []).forEach((s) => {
+        const key = s.category || 'Other';
+        if (!groupedSkillsMap.has(key)) groupedSkillsMap.set(key, []);
+        groupedSkillsMap.get(key).push(s.name);
       });
-
-      setProjects([
-        {
-          id: 1,
-          title: 'E-Commerce Platform',
-          description: 'A full-stack e-commerce solution with real-time inventory management and payment processing.',
-          tech_stack: ['React', 'Node.js', 'PostgreSQL', 'Stripe'],
-          image_url: '/api/placeholder/400/250',
-          github_url: 'https://github.com',
-          live_url: 'https://example.com',
-          featured: true
-        },
-        {
-          id: 2,
-          title: 'Task Management App',
-          description: 'Collaborative task management tool with real-time updates and team analytics.',
-          tech_stack: ['React', 'Express', 'Socket.io', 'MongoDB'],
-          image_url: '/api/placeholder/400/250',
-          github_url: 'https://github.com',
-          live_url: 'https://example.com',
-          featured: true
-        },
-        {
-          id: 3,
-          title: 'AI Content Generator',
-          description: 'AI-powered content generation tool using OpenAI API for creative writing assistance.',
-          tech_stack: ['Next.js', 'Python', 'FastAPI', 'OpenAI'],
-          image_url: '/api/placeholder/400/250',
-          github_url: 'https://github.com',
-          live_url: 'https://example.com',
-          featured: false
-        }
-      ]);
-
-      setBlogPosts([
-        {
-          id: 1,
-          title: 'Building Scalable React Applications',
-          slug: 'building-scalable-react-apps',
-          excerpt: 'Learn the best practices for building large-scale React applications...',
-          published_at: '2024-01-15',
-          read_time: 5,
-          tags: ['React', 'JavaScript', 'Architecture']
-        },
-        {
-          id: 2,
-          title: 'PostgreSQL Performance Optimization',
-          slug: 'postgresql-performance',
-          excerpt: 'Deep dive into PostgreSQL query optimization and indexing strategies...',
-          published_at: '2024-01-10',
-          read_time: 8,
-          tags: ['PostgreSQL', 'Database', 'Performance']
-        }
-      ]);
-
-      setSkills([
-        { category: 'Frontend', items: ['React', 'TypeScript', 'Next.js', 'Tailwind CSS'] },
-        { category: 'Backend', items: ['Node.js', 'Express', 'Python', 'FastAPI'] },
-        { category: 'Database', items: ['PostgreSQL', 'MongoDB', 'Redis'] },
-        { category: 'DevOps', items: ['Docker', 'AWS', 'CI/CD', 'Kubernetes'] }
-      ]);
+      const groupedSkills = Array.from(groupedSkillsMap.entries()).map(([category, items]) => ({ category, items }));
+      setSkills(groupedSkills);
 
       setLoading(false);
     } catch (error) {
