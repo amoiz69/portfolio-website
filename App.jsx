@@ -190,9 +190,10 @@ const Portfolio = () => {
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
               <img
-                src="/api/placeholder/400/400"
-                alt={profile?.name}
-                className="rounded-2xl shadow-2xl shadow-purple-500/20"
+                src={profile?.image_url || 'https://placehold.co/400x400?text=Profile'}
+                alt={profile?.name || 'Profile'}
+                className="rounded-2xl shadow-2xl shadow-purple-500/20 object-cover w-full h-auto"
+                loading="lazy"
               />
             </div>
             <div>
