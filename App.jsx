@@ -11,6 +11,13 @@ const Portfolio = () => {
   const [loading, setLoading] = useState(true);
   const [activeSection, setActiveSection] = useState('home');
 
+  const toExternalUrl = (url) => {
+    if (!url || typeof url !== 'string') return '#';
+    const trimmed = url.trim();
+    if (/^https?:\/\//i.test(trimmed)) return trimmed;
+    return `https://${trimmed.replace(/^\/*/, '')}`;
+  };
+
   // Fetch data from backend
   useEffect(() => {
     fetchData();
@@ -337,7 +344,7 @@ const Portfolio = () => {
               Email
             </a>
             <a
-              href={profile?.github}
+              href={toExternalUrl(profile?.github)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-6 py-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
@@ -346,7 +353,7 @@ const Portfolio = () => {
               GitHub
             </a>
             <a
-              href={profile?.linkedin}
+              href={toExternalUrl(profile?.linkedin)}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2 px-6 py-3 bg-gray-800 rounded-lg hover:bg-gray-700 transition-colors"
