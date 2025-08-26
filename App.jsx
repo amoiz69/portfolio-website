@@ -99,21 +99,30 @@ const Portfolio = () => {
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="relative flex items-center justify-center h-16">
 
-            {/* Desktop Navigation (centered) */}
-            <div className="hidden md:flex items-center space-x-8">
-              {['home', 'about', 'projects', 'blog', 'contact'].map((item) => (
-                <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className={`capitalize transition-colors ${
-                    activeSection === item
-                      ? 'text-purple-400'
-                      : 'text-gray-200 hover:text-white'
-                  }`}
-                >
-                  {item}
-                </button>
-              ))}
+            {/* Desktop Navigation (centered with rounded outline and subtle background) */}
+            <div className="hidden md:flex">
+              <div className="px-6 py-2 rounded-full border border-white/15 bg-gray-900/30 backdrop-blur-md shadow-md shadow-black/10">
+                <div className="flex items-center space-x-8">
+                  {['home', 'about', 'projects', 'blog', 'contact'].map((item) => {
+                    const isActive = activeSection === item;
+                    const isCTA = item === 'contact';
+                    const base = 'capitalize transition-colors';
+                    const normal = isActive ? 'text-purple-400' : 'text-gray-200 hover:text-white';
+                    const cta = `px-4 py-1 rounded-full border ${
+                      isActive ? 'border-purple-500/40 text-white' : 'border-white/20 text-white'
+                    } bg-white/10 hover:bg-white/15 shadow-sm`;
+                    return (
+                      <button
+                        key={item}
+                        onClick={() => scrollToSection(item)}
+                        className={`${base} ${isCTA ? cta : normal}`}
+                      >
+                        {item}
+                      </button>
+                    );
+                  })}
+                </div>
+              </div>
             </div>
 
             {/* Mobile menu button (right aligned) */}
@@ -136,7 +145,11 @@ const Portfolio = () => {
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className="capitalize block w-full text-left px-3 py-2 text-gray-200 hover:text-white hover:bg-gray-800 rounded"
+                  className={`capitalize block w-full text-left px-3 py-2 rounded ${
+                    item === 'contact'
+                      ? 'text-white bg-white/10 border border-white/20'
+                      : 'text-gray-200 hover:text-white hover:bg-gray-800'
+                  }`}
                 >
                   {item}
                 </button>
