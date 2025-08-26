@@ -95,39 +95,32 @@ const Portfolio = () => {
   return (
     <div className="min-h-screen bg-gray-900 text-white">
       {/* Navigation */}
-      <nav className="fixed top-0 w-full bg-gray-900/90 backdrop-blur-md z-50 border-b border-gray-800">
+      <nav className="fixed top-0 w-full bg-transparent z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
-              <span className="text-2xl font-bold bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-                {profile?.name}
-              </span>
+          <div className="relative flex items-center justify-center h-16">
+
+            {/* Desktop Navigation (centered) */}
+            <div className="hidden md:flex items-center space-x-8">
+              {['home', 'about', 'projects', 'blog', 'contact'].map((item) => (
+                <button
+                  key={item}
+                  onClick={() => scrollToSection(item)}
+                  className={`capitalize transition-colors ${
+                    activeSection === item
+                      ? 'text-purple-400'
+                      : 'text-gray-200 hover:text-white'
+                  }`}
+                >
+                  {item}
+                </button>
+              ))}
             </div>
 
-            {/* Desktop Navigation */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-baseline space-x-8">
-                {['home', 'about', 'projects', 'blog', 'contact'].map((item) => (
-                  <button
-                    key={item}
-                    onClick={() => scrollToSection(item)}
-                    className={`capitalize transition-colors ${
-                      activeSection === item
-                        ? 'text-purple-400'
-                        : 'text-gray-300 hover:text-white'
-                    }`}
-                  >
-                    {item}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            {/* Mobile menu button */}
-            <div className="md:hidden">
+            {/* Mobile menu button (right aligned) */}
+            <div className="md:hidden absolute right-0">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-300 hover:text-white"
+                className="text-gray-200 hover:text-white"
               >
                 {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
               </button>
@@ -137,13 +130,13 @@ const Portfolio = () => {
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden bg-gray-800 border-b border-gray-700">
+          <div className="md:hidden bg-gray-900/80 backdrop-blur border-b border-gray-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
               {['home', 'about', 'projects', 'blog', 'contact'].map((item) => (
                 <button
                   key={item}
                   onClick={() => scrollToSection(item)}
-                  className="capitalize block w-full text-left px-3 py-2 text-gray-300 hover:text-white hover:bg-gray-700 rounded"
+                  className="capitalize block w-full text-left px-3 py-2 text-gray-200 hover:text-white hover:bg-gray-800 rounded"
                 >
                   {item}
                 </button>
