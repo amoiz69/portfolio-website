@@ -6,7 +6,12 @@ module.exports = {
     "./App.jsx"
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        'inter-display': ['Inter Display', 'sans-serif'],
+        'inter': ['Inter', 'sans-serif'],
+      },
+    },
   },
   plugins: [],
 }

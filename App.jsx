@@ -65,7 +65,7 @@ const Portfolio = () => {
   // Track active section on scroll
   useEffect(() => {
     const handleScroll = () => {
-      const sections = ['home', 'about', 'projects', 'blog', 'contact'];
+      const sections = ['home', 'works', 'story', 'process', 'connect'];
       const scrollPosition = window.scrollY + 100;
 
       for (const section of sections) {
@@ -97,35 +97,70 @@ const Portfolio = () => {
       {/* Navigation */}
       <nav className="fixed top-0 w-full bg-transparent z-50">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="relative flex items-center justify-center h-16">
+                      <div className="relative flex items-center justify-center h-16">
+              {/* Desktop Navigation - Daniel Sun Style */}
+              <div className="hidden md:flex">
+                <div className="px-6 py-2 rounded-[80px] bg-black/75 backdrop-blur-md shadow-lg">
+                                  <div className="flex items-center space-x-8">
+                  {/* Sun Icon/Logo */}
+                  <a 
+                    href="#home" 
+                    onClick={() => scrollToSection('home')}
+                    className="flex items-center justify-center w-10 h-10 rounded-full hover:bg-white/10 transition-colors"
+                  >
+                    <svg 
+                      width="24" 
+                      height="24" 
+                      viewBox="0 0 24 24" 
+                      fill="none" 
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="text-white/65"
+                    >
+                      <path 
+                        d="M 7.081 18.931 C 15.273 19.853 19.843 13.955 17.88 10.023 C 12.609 -0.53 -1.763 19.87 11.928 17.902 M 2.754 12.66 L 2.737 12.66 C 2.555 12.66 1.857 12.66 1.034 12.727 M 4.545 18.931 C 4.162 19.13 2.673 20.281 2.346 20.5 M 11.503 22 L 11.212 23 M 14.294 1.224 C 14.053 2.28 13.894 3.229 13.894 3.486 M 18.545 6.727 C 18.744 6.529 21.062 4.617 22.648 3.486 M 21.379 11.313 C 21.379 11.313 21.952 11.202 22.648 11.105 M 18.545 17.902 C 19.272 18.273 20.483 19.363 20.996 20.009 M 2.09 2.091 C 4.908 3.486 6.727 5.545 7.454 6.909" 
+                        fill="transparent" 
+                        strokeWidth="1.64" 
+                        stroke="currentColor" 
+                        strokeLinecap="round" 
+                        strokeLinejoin="round"
+                      />
+                    </svg>
+                  </a>
 
-            {/* Desktop Navigation (centered with rounded outline and subtle background) */}
-            <div className="hidden md:flex">
-              <div className="px-6 py-2 rounded-full border border-white/15 bg-gray-900/30 backdrop-blur-md shadow-md shadow-black/10">
-                <div className="flex items-center space-x-8">
-                  {['home', 'about', 'projects', 'blog', 'contact'].map((item) => {
-                    const isActive = activeSection === item;
-                    const isCTA = item === 'contact';
-                    const base = 'capitalize transition-colors';
-                    const normal = isActive ? 'text-purple-400' : 'text-gray-200 hover:text-white';
-                    const cta = `px-4 py-1 rounded-full border ${
-                      isActive ? 'border-purple-500/40 text-white' : 'border-white/20 text-white'
-                    } bg-white/10 hover:bg-white/15 shadow-sm`;
-                    return (
-                      <button
-                        key={item}
-                        onClick={() => scrollToSection(item)}
-                        className={`${base} ${isCTA ? cta : normal}`}
-                      >
-                        {item}
-                      </button>
-                    );
-                  })}
+                  {/* Navigation Links */}
+                  {[
+                    { id: 'story', label: 'Story' },
+                    { id: 'works', label: 'Work' },
+                    { id: 'process', label: 'Process' },
+                    { id: 'connect', label: 'Connect' }
+                  ].map((item) => (
+                    <a
+                      key={item.id}
+                      href={`#${item.id}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        scrollToSection(item.id);
+                      }}
+                      className="text-white/60 hover:text-white transition-colors font-medium text-xl font-inter-display"
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+
+                  {/* Start Project Button */}
+                  <a
+                    href={`mailto:${profile?.email || 'hello@example.com'}`}
+                    className="px-5 py-2 rounded-[32px] bg-purple-500/15 border border-purple-500/20 hover:bg-purple-500/25 transition-colors"
+                  >
+                    <span className="text-purple-400 font-medium text-xl font-inter">
+                      Start project
+                    </span>
+                  </a>
                 </div>
               </div>
             </div>
 
-            {/* Mobile menu button (right aligned) */}
+            {/* Mobile menu button */}
             <div className="md:hidden absolute right-0">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
@@ -141,19 +176,27 @@ const Portfolio = () => {
         {isMenuOpen && (
           <div className="md:hidden bg-gray-900/80 backdrop-blur border-b border-gray-800">
             <div className="px-2 pt-2 pb-3 space-y-1">
-              {['home', 'about', 'projects', 'blog', 'contact'].map((item) => (
+              {[
+                { id: 'home', label: 'Home' },
+                { id: 'story', label: 'Story' },
+                { id: 'works', label: 'Work' },
+                { id: 'process', label: 'Process' },
+                { id: 'connect', label: 'Connect' }
+              ].map((item) => (
                 <button
-                  key={item}
-                  onClick={() => scrollToSection(item)}
-                  className={`capitalize block w-full text-left px-3 py-2 rounded ${
-                    item === 'contact'
-                      ? 'text-white bg-white/10 border border-white/20'
-                      : 'text-gray-200 hover:text-white hover:bg-gray-800'
-                  }`}
+                  key={item.id}
+                  onClick={() => scrollToSection(item.id)}
+                  className={`block w-full text-left px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 transition-colors`}
                 >
-                  {item}
+                  {item.label}
                 </button>
               ))}
+              <a
+                href={`mailto:${profile?.email || 'hello@example.com'}`}
+                className="block w-full text-left px-3 py-2 rounded text-purple-400 hover:text-purple-300 hover:bg-purple-500/10 transition-colors"
+              >
+                Start project
+              </a>
             </div>
           </div>
         )}
@@ -169,13 +212,13 @@ const Portfolio = () => {
           <p className="text-lg text-gray-400 mb-8 max-w-2xl mx-auto">{profile?.bio}</p>
           <div className="flex flex-wrap gap-4 justify-center">
             <button
-              onClick={() => scrollToSection('projects')}
+              onClick={() => scrollToSection('works')}
               className="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 rounded-lg font-semibold hover:shadow-lg hover:shadow-purple-500/30 transition-all transform hover:-translate-y-1"
             >
               View My Work
             </button>
             <button
-              onClick={() => scrollToSection('contact')}
+              onClick={() => scrollToSection('connect')}
               className="px-8 py-3 border-2 border-purple-500 rounded-lg font-semibold hover:bg-purple-500/20 transition-all"
             >
               Get In Touch
@@ -187,11 +230,11 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section id="about" className="py-20 px-4">
+      {/* Story Section */}
+      <section id="story" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            About Me
+            My Story
           </h2>
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div>
@@ -204,12 +247,14 @@ const Portfolio = () => {
             </div>
             <div>
               <p className="text-gray-300 mb-6 text-lg leading-relaxed">
-                I'm a passionate full-stack developer with expertise in building modern web applications. 
-                I love turning complex problems into simple, beautiful, and intuitive solutions.
+                My journey in technology began with curiosity and has evolved into a passion for creating 
+                digital experiences that make a difference. I believe in the power of thoughtful design and 
+                clean code to solve real-world problems.
               </p>
               <p className="text-gray-300 mb-8 text-lg leading-relaxed">
-                When I'm not coding, you can find me exploring new technologies, contributing to open-source 
-                projects, or sharing my knowledge through blog posts and tutorials.
+                From my early days tinkering with HTML to building complex applications, I've learned that 
+                great software comes from understanding people first, then technology. Every project is an 
+                opportunity to learn, grow, and create something meaningful.
               </p>
               
               {/* Skills */}
@@ -235,14 +280,14 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-20 px-4 bg-gray-800/50">
+      {/* Works Section */}
+      <section id="works" className="py-20 px-4 bg-gray-800/50">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Featured Projects
+            My Work
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {projects.filter(p => p.featured).map((project) => (
+            {projects.map((project) => (
               <div
                 key={project.id}
                 className="bg-gray-800 rounded-xl overflow-hidden hover:shadow-2xl hover:shadow-purple-500/20 transition-all transform hover:-translate-y-2"
@@ -292,48 +337,64 @@ const Portfolio = () => {
         </div>
       </section>
 
-      {/* Blog Section */}
-      <section id="blog" className="py-20 px-4">
+      {/* Process Section */}
+      <section id="process" className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-            Recent Blog Posts
+            My Process
           </h2>
-          <div className="grid md:grid-cols-2 gap-8">
-            {blogPosts.map((post) => (
-              <article
-                key={post.id}
-                className="bg-gray-800 rounded-xl p-6 hover:shadow-2xl hover:shadow-purple-500/20 transition-all"
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                title: "Discovery & Research",
+                description: "I start by understanding your goals, target audience, and project requirements through comprehensive research and stakeholder interviews.",
+                icon: "🔍"
+              },
+              {
+                title: "Design & Planning",
+                description: "Creating wireframes, prototypes, and detailed technical specifications to ensure the solution meets your needs perfectly.",
+                icon: "✏️"
+              },
+              {
+                title: "Development & Testing",
+                description: "Building your project with clean, maintainable code while conducting thorough testing to ensure quality and performance.",
+                icon: "⚡"
+              },
+              {
+                title: "Deployment & Launch",
+                description: "Smooth deployment to production with monitoring, optimization, and ongoing support to ensure your project's success.",
+                icon: "🚀"
+              },
+              {
+                title: "Iteration & Growth",
+                description: "Continuous improvement based on user feedback and analytics to keep your project evolving and competitive.",
+                icon: "📈"
+              },
+              {
+                title: "Maintenance & Support",
+                description: "Ongoing technical support, updates, and maintenance to keep your project running smoothly and securely.",
+                icon: "🛠️"
+              }
+            ].map((step, index) => (
+              <div
+                key={index}
+                className="bg-gray-800 rounded-xl p-6 hover:shadow-2xl hover:shadow-purple-500/20 transition-all text-center"
               >
-                <h3 className="text-xl font-semibold mb-2 hover:text-purple-400 transition-colors">
-                  {post.title}
+                <div className="text-4xl mb-4">{step.icon}</div>
+                <h3 className="text-xl font-semibold mb-3 text-purple-400">
+                  {step.title}
                 </h3>
-                <div className="flex items-center gap-4 text-sm text-gray-400 mb-3">
-                  <span className="flex items-center gap-1">
-                    <Calendar size={16} />
-                    {new Date(post.published_at).toLocaleDateString()}
-                  </span>
-                  <span>{post.read_time} min read</span>
-                </div>
-                <p className="text-gray-300 mb-4">{post.excerpt}</p>
-                <div className="flex flex-wrap gap-2">
-                  {post.tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="flex items-center gap-1 px-2 py-1 bg-gray-700 rounded text-sm"
-                    >
-                      <Tag size={12} />
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              </article>
+                <p className="text-gray-300 text-sm leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-gray-800/50">
+      {/* Connect Section */}
+      <section id="connect" className="py-20 px-4 bg-gray-800/50">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-4xl font-bold mb-8 bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
             Let's Connect
@@ -375,7 +436,7 @@ const Portfolio = () => {
       {/* Footer */}
       <footer className="py-8 px-4 border-t border-gray-800">
         <div className="text-center text-gray-400">
-          <p>&copy; 2024 {profile?.name}. All rights reserved.</p>
+          <p>&copy; 2025 {profile?.name}. All rights reserved.</p>
         </div>
       </footer>
 
